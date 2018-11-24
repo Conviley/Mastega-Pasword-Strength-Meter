@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Password Strength Meter</string>
+    <string name="place_holder">Password</string>
+    <string name="test_error">ERROR!</string>
 </resources>

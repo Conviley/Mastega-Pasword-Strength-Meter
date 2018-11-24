@@ -4,11 +4,20 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -19,17 +28,22 @@ public class PasswordStrengthMeter extends LinearLayout{
 
     private CardView container;
 
+    private RelativeLayout cardViewLayout;
+
     private TextView errorTextView;
 
     private EditText inputField;
 
-    private ImageView[] strengthIcon;
+    private ArrayList<Integer> strengthIcons;
+    private ImageView strengthIcon;
 
     private ImageView toggleVisibility;
 
-    private String placeholderText;
+    private String placeholderText = "PASSWORD";
 
     private Context ctx;
+
+    private StockStrengthChecker strengthChecker;
 
     public PasswordStrengthMeter(Context context) {
         super(context);
@@ -53,15 +67,80 @@ public class PasswordStrengthMeter extends LinearLayout{
 
     private void init(Context context) {
         this.ctx = context;
+        this.setOrientation(VERTICAL);
 
-        container = new CardView(context);
+        container = new CardView(ctx);
+        inputField = new EditText(ctx);
+        errorTextView = new TextView(ctx);
+        toggleVisibility = new ImageView(ctx);
+        cardViewLayout = new RelativeLayout(ctx);
+
+        strengthIcons = new ArrayList<>();
+        strengthIcon = new ImageView(ctx);
+        strengthChecker = new StockStrengthChecker();
+
+
+
         LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
+               1000, LayoutParams.MATCH_PARENT
         );
 
-        container.setCardBackgroundColor(Color.RED);
-        inputField = new EditText(ctx);
-        container.addView(inputField);
+        containerParams.gravity = Gravity.CENTER;
+
+        float scale = getResources().getDisplayMetrics().density;
+        int dpAsPixels = (int) (10*scale + 0.5f);
+
+        strengthIcons.add(R.drawable.cry);
+        strengthIcons.add(R.drawable.bad);
+        strengthIcons.add(R.drawable.okay);
+        strengthIcons.add(R.drawable.good);
+        strengthIcons.add(R.drawable.awesome);
+        strengthIcons.add(R.drawable.love);
+
+        containerParams.setMargins(0, dpAsPixels, 0 ,0 );
+
+        container.setCardBackgroundColor(Color.parseColor("#f7f8f9"));
+        inputField.setHint(R.string.place_holder);
+
+        inputField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int strength = strengthChecker.CalculateStrength(s.toString());
+                setStrengthIcon(strength);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        errorTextView.setText(R.string.test_error);
+
+
+
+        //FILL LAYOUT WITH STUFF
+        cardViewLayout.addView(strengthIcon);
+        cardViewLayout.addView(inputField);
+        container.addView(cardViewLayout);
+
         this.addView(container, containerParams);
+        this.addView(errorTextView);
+    }
+
+    private void setStrengthIcon (int strength) {
+        if (strength > 5 || strength < 0) {
+            throw new IllegalArgumentException("Number out of range! Must be within (0-5)");
+
+        }
+        int Icon = strengthIcons.get(strength);
+        strengthIcon.setBackgroundResource(Icon);
+        invalidate();
+        requestLayout();
     }
 }
