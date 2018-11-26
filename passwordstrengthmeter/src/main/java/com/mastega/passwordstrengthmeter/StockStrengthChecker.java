@@ -57,6 +57,7 @@ public class StockStrengthChecker implements StrengthChecker{
                 strength += 1;
             }
         }
+        
         return strength;
     }
 }
