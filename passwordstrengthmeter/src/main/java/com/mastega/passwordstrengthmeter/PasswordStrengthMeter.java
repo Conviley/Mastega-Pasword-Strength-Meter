@@ -5,9 +5,14 @@ import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,7 +48,11 @@ public class PasswordStrengthMeter extends LinearLayout{
 
     private Context ctx;
 
+    private int currentStrength;
+
     private StockStrengthChecker strengthChecker;
+
+    private boolean hidden = true;
 
     public PasswordStrengthMeter(Context context) {
         super(context);
@@ -68,17 +77,66 @@ public class PasswordStrengthMeter extends LinearLayout{
     private void init(Context context) {
         this.ctx = context;
         this.setOrientation(VERTICAL);
+        this.currentStrength = -1;
 
         container = new CardView(ctx);
+
         inputField = new EditText(ctx);
+        inputField.setId(View.generateViewId());
+        inputField.setInputType(InputType.TYPE_CLASS_TEXT |
+                InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
         errorTextView = new TextView(ctx);
         toggleVisibility = new ImageView(ctx);
+        toggleVisibility.setBackgroundResource(R.drawable.monkyblind);
+        toggleVisibility.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (hidden) {
+                    hidden = false;
+                    toggleVisibility.setBackgroundResource(R.drawable.monkeysee);
+                    inputField.setInputType(InputType.TYPE_CLASS_TEXT |
+                            InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+
+                } else {
+                    hidden = true;
+                    toggleVisibility.setBackgroundResource(R.drawable.monkyblind);
+                    inputField.setInputType(InputType.TYPE_CLASS_TEXT |
+                            InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+            }
+        });
+
+
         cardViewLayout = new RelativeLayout(ctx);
 
         strengthIcons = new ArrayList<>();
         strengthIcon = new ImageView(ctx);
+
+        strengthIcon.setId(View.generateViewId());
+        strengthIcon.setBackgroundResource(R.drawable.nomouthgray);
+
         strengthChecker = new StockStrengthChecker();
 
+
+        RelativeLayout.LayoutParams inputFieldParams = new RelativeLayout.LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT);
+        inputFieldParams.addRule(RelativeLayout.RIGHT_OF, strengthIcon.getId());
+
+
+        RelativeLayout.LayoutParams strengthIconParams = new RelativeLayout.LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT);
+
+        strengthIconParams.addRule(RelativeLayout.CENTER_VERTICAL);
+
+        RelativeLayout.LayoutParams toggleVisibilityParams = new RelativeLayout.LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT);
+
+        toggleVisibilityParams.addRule(RelativeLayout.CENTER_VERTICAL);
+        toggleVisibilityParams.addRule(RelativeLayout.RIGHT_OF, inputField.getId());
 
 
         LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams(
@@ -87,8 +145,9 @@ public class PasswordStrengthMeter extends LinearLayout{
 
         containerParams.gravity = Gravity.CENTER;
 
-        float scale = getResources().getDisplayMetrics().density;
-        int dpAsPixels = (int) (10*scale + 0.5f);
+
+
+        cardViewLayout.setPadding(dpAsPixels(5),0,dpAsPixels(5),0);
 
         strengthIcons.add(R.drawable.cry);
         strengthIcons.add(R.drawable.bad);
@@ -97,26 +156,32 @@ public class PasswordStrengthMeter extends LinearLayout{
         strengthIcons.add(R.drawable.awesome);
         strengthIcons.add(R.drawable.love);
 
-        containerParams.setMargins(0, dpAsPixels, 0 ,0 );
+        //containerParams.setMargins(0, dpAsPixels, 0 ,0 );
 
         container.setCardBackgroundColor(Color.parseColor("#f7f8f9"));
         inputField.setHint(R.string.place_holder);
 
         inputField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int strength = strengthChecker.CalculateStrength(s.toString());
-                setStrengthIcon(strength);
+                if (currentStrength != strength) {
+                    setStrengthIcon(strength);
+                    currentStrength = strength;
+                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if (s.length() == 0) {
+                    strengthIcon.setBackgroundResource(R.drawable.nomouthgray);
+                    final Animation slide_up = AnimationUtils.loadAnimation(ctx, R.anim.scale_up);
+                    strengthIcon.startAnimation(slide_up);
+                    currentStrength = -1;
+                }
             }
         });
 
@@ -125,8 +190,9 @@ public class PasswordStrengthMeter extends LinearLayout{
 
 
         //FILL LAYOUT WITH STUFF
-        cardViewLayout.addView(strengthIcon);
-        cardViewLayout.addView(inputField);
+        cardViewLayout.addView(strengthIcon, strengthIconParams);
+        cardViewLayout.addView(inputField, inputFieldParams);
+        cardViewLayout.addView(toggleVisibility, toggleVisibilityParams);
         container.addView(cardViewLayout);
 
         this.addView(container, containerParams);
@@ -140,7 +206,16 @@ public class PasswordStrengthMeter extends LinearLayout{
         }
         int Icon = strengthIcons.get(strength);
         strengthIcon.setBackgroundResource(Icon);
+
+        final Animation slide_up = AnimationUtils.loadAnimation(ctx, R.anim.scale_up);
+        strengthIcon.startAnimation(slide_up);
+
         invalidate();
         requestLayout();
+    }
+
+    private int dpAsPixels (int dp) {
+        float scale = getResources().getDisplayMetrics().density;
+        return (int) (dp*scale + 0.5f);
     }
 }
