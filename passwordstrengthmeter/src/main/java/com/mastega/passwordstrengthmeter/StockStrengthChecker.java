@@ -9,22 +9,33 @@ import java.util.regex.Pattern;
 
 public class StockStrengthChecker implements StrengthChecker{
 
+    private boolean foundUpperCase = false;
+    private boolean foundLowerCase = false;
+    private boolean foundSpecialChar = false;
+    private boolean foundDigit = false;
+    private boolean adequateLength = false;
+    private boolean idealLength = false;
+
     @Override
     public int CalculateStrength(String password) {
-        int strength = 0;
+        foundUpperCase = false;
+        foundLowerCase = false;
+        foundSpecialChar = false;
+        foundDigit = false;
+        adequateLength = false;
+        idealLength = false;
 
-        boolean foundUpperCase = false;
-        boolean foundLowerCase = false;
-        boolean foundSpecialChar= false;
-        boolean foundDigit= false;
+        int strength = 0;
 
         if (password.length() >= 1) {
             strength += 1;
             if (password.length() >= 8){
                 strength += 1;
+                adequateLength = true;
 
                 if (password.length() >= 12) {
                     strength += 1;
+                    idealLength = true;
                 }
 
                 for (int i = 0; i < password.length(); i++) {
@@ -60,7 +71,26 @@ public class StockStrengthChecker implements StrengthChecker{
                 }
             }
         }
-
         return strength;
+    }
+
+    @Override
+    public int setHelperText() {
+        if (!adequateLength) {
+            return R.string.under_eight;
+        }
+        else if (!foundLowerCase || !foundUpperCase) {
+            return R.string.no_mixed_case;
+        }
+        else if (!foundDigit) {
+            return R.string.no_numerical_char;
+        }
+        else if (!foundSpecialChar) {
+            return R.string.no_special_char;
+        }
+        else if (!idealLength) {
+            return R.string.under_twelve;
+        }
+        return R.string.ideal_password;
     }
 }

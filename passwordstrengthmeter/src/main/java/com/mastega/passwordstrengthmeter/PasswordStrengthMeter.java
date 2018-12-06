@@ -44,8 +44,6 @@ public class PasswordStrengthMeter extends LinearLayout{
 
     private ImageView toggleVisibility;
 
-    private String placeholderText = "PASSWORD";
-
     private Context ctx;
 
     private int currentStrength;
@@ -173,6 +171,7 @@ public class PasswordStrengthMeter extends LinearLayout{
                 if (currentStrength != strength) {
                     setStrengthIcon(strength);
                     currentStrength = strength;
+                    errorTextView.setText(strengthChecker.setHelperText());
                 }
             }
 
@@ -180,7 +179,7 @@ public class PasswordStrengthMeter extends LinearLayout{
             public void afterTextChanged(Editable s) { }
         });
 
-        errorTextView.setText(R.string.test_error);
+        //errorTextView.setText(R.string.test_error);
 
         //FILL LAYOUT WITH STUFF
         cardViewLayout.addView(strengthIcon, strengthIconParams);

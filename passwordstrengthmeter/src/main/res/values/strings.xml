@@ -2,4 +2,11 @@
     <string name="app_name">Password Strength Meter</string>
     <string name="place_holder">Password</string>
     <string name="test_error">ERROR!</string>
+
+    <string name="under_eight">Must be longer than 8 characters</string>
+    <string name="under_twelve">Recommended: At least 12 characters</string>
+    <string name="no_mixed_case">Recommended: Mix both lower and upper case letters</string>
+    <string name="no_special_char">Recommended: Add special character</string>
+    <string name="no_numerical_char">Recommended: Add a number</string>
+    <string name="ideal_password">Lovely password, friend!</string>
 </resources>
