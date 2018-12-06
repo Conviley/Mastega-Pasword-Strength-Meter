@@ -77,7 +77,6 @@ public class PasswordStrengthMeter extends LinearLayout{
     private void init(Context context) {
         this.ctx = context;
         this.setOrientation(VERTICAL);
-        this.currentStrength = -1;
 
         container = new CardView(ctx);
 
@@ -104,9 +103,11 @@ public class PasswordStrengthMeter extends LinearLayout{
                     inputField.setInputType(InputType.TYPE_CLASS_TEXT |
                             InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
+                inputField.setSelection(inputField.getText().length());
             }
         });
 
+        inputField.setBackground(null);
 
         cardViewLayout = new RelativeLayout(ctx);
 
@@ -136,7 +137,7 @@ public class PasswordStrengthMeter extends LinearLayout{
                 LayoutParams.WRAP_CONTENT);
 
         toggleVisibilityParams.addRule(RelativeLayout.CENTER_VERTICAL);
-        toggleVisibilityParams.addRule(RelativeLayout.RIGHT_OF, inputField.getId());
+        toggleVisibilityParams.addRule(RelativeLayout.ALIGN_PARENT_END);
 
 
         LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams(
@@ -149,6 +150,7 @@ public class PasswordStrengthMeter extends LinearLayout{
 
         cardViewLayout.setPadding(dpAsPixels(5),0,dpAsPixels(5),0);
 
+        strengthIcons.add(R.drawable.nomouthgray);
         strengthIcons.add(R.drawable.cry);
         strengthIcons.add(R.drawable.bad);
         strengthIcons.add(R.drawable.okay);
@@ -175,14 +177,7 @@ public class PasswordStrengthMeter extends LinearLayout{
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length() == 0) {
-                    strengthIcon.setBackgroundResource(R.drawable.nomouthgray);
-                    final Animation slide_up = AnimationUtils.loadAnimation(ctx, R.anim.scale_up);
-                    strengthIcon.startAnimation(slide_up);
-                    currentStrength = -1;
-                }
-            }
+            public void afterTextChanged(Editable s) { }
         });
 
         errorTextView.setText(R.string.test_error);
@@ -200,7 +195,7 @@ public class PasswordStrengthMeter extends LinearLayout{
     }
 
     private void setStrengthIcon (int strength) {
-        if (strength > 5 || strength < 0) {
+        if (strength > 6 || strength < 0) {
             throw new IllegalArgumentException("Number out of range! Must be within (0-5)");
 
         }
