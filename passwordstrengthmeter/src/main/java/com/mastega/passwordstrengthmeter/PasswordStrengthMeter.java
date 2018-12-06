@@ -121,7 +121,7 @@ public class PasswordStrengthMeter extends LinearLayout{
 
 
         RelativeLayout.LayoutParams inputFieldParams = new RelativeLayout.LayoutParams(
-                LayoutParams.WRAP_CONTENT,
+                LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT);
         inputFieldParams.addRule(RelativeLayout.RIGHT_OF, strengthIcon.getId());
 
