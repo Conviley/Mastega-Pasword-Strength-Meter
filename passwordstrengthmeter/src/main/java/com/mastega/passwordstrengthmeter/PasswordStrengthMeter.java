@@ -182,8 +182,6 @@ public class PasswordStrengthMeter extends LinearLayout{
 
         errorTextView.setText(R.string.test_error);
 
-
-
         //FILL LAYOUT WITH STUFF
         cardViewLayout.addView(strengthIcon, strengthIconParams);
         cardViewLayout.addView(inputField, inputFieldParams);
