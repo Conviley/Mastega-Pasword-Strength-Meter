@@ -160,7 +160,7 @@ public class PasswordStrengthMeter extends LinearLayout{
 
         //containerParams.setMargins(0, dpAsPixels, 0 ,0 );
 
-        container.setCardBackgroundColor(Color.parseColor("#f7f8f9"));
+        container.setCardBackgroundColor(Color.parseColor("#f7f8f5"));
         inputField.setHint(R.string.place_holder);
 
         inputField.addTextChangedListener(new TextWatcher() {
