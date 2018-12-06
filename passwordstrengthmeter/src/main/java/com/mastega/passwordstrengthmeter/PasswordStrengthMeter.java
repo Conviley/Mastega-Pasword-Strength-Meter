@@ -139,12 +139,12 @@ public class PasswordStrengthMeter extends LinearLayout{
 
 
         LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams(
-               1000, LayoutParams.MATCH_PARENT
+               LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT
         );
 
         containerParams.gravity = Gravity.CENTER;
 
-
+        containerParams.setMargins(dpAsPixels(1),0,dpAsPixels(1),0); //hax to keep shadows.
 
         cardViewLayout.setPadding(dpAsPixels(5),0,dpAsPixels(5),0);
 
