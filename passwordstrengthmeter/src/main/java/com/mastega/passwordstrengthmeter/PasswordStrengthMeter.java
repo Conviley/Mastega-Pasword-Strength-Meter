@@ -2,6 +2,7 @@ package com.mastega.passwordstrengthmeter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
@@ -10,7 +11,6 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -20,9 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static java.util.Collections.copy;
 
 
 /**
@@ -31,26 +30,20 @@ import java.util.regex.Pattern;
 
 public class PasswordStrengthMeter extends LinearLayout{
 
-    private CardView container;
-
-    private RelativeLayout cardViewLayout;
-
     private TextView errorTextView;
-
     private EditText inputField;
-
-    private ArrayList<Integer> strengthIcons;
     private ImageView strengthIcon;
-
     private ImageView toggleVisibility;
 
+    private ArrayList<Drawable> strengthIcons;
     private Context ctx;
+    private StrengthChecker strengthChecker;
+    private Drawable visibleIcon;
+    private Drawable hiddenIcon;
 
     private int currentStrength;
-
-    private StockStrengthChecker strengthChecker;
-
     private boolean hidden = true;
+    private int maxStrength = 6;
 
     public PasswordStrengthMeter(Context context) {
         super(context);
@@ -76,7 +69,7 @@ public class PasswordStrengthMeter extends LinearLayout{
         this.ctx = context;
         this.setOrientation(VERTICAL);
 
-        container = new CardView(ctx);
+        CardView container = new CardView(ctx);
 
         inputField = new EditText(ctx);
         inputField.setId(View.generateViewId());
@@ -85,19 +78,21 @@ public class PasswordStrengthMeter extends LinearLayout{
 
         errorTextView = new TextView(ctx);
         toggleVisibility = new ImageView(ctx);
-        toggleVisibility.setBackgroundResource(R.drawable.monkyblind);
+        hiddenIcon = ctx.getDrawable(R.drawable.monkyblind);
+        visibleIcon = ctx.getDrawable(R.drawable.monkeysee);
+        toggleVisibility.setBackground(hiddenIcon);
         toggleVisibility.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (hidden) {
                     hidden = false;
-                    toggleVisibility.setBackgroundResource(R.drawable.monkeysee);
+                    toggleVisibility.setBackground(visibleIcon);
                     inputField.setInputType(InputType.TYPE_CLASS_TEXT |
                             InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
 
                 } else {
                     hidden = true;
-                    toggleVisibility.setBackgroundResource(R.drawable.monkyblind);
+                    toggleVisibility.setBackground(hiddenIcon);
                     inputField.setInputType(InputType.TYPE_CLASS_TEXT |
                             InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
@@ -107,7 +102,7 @@ public class PasswordStrengthMeter extends LinearLayout{
 
         inputField.setBackground(null);
 
-        cardViewLayout = new RelativeLayout(ctx);
+        RelativeLayout cardViewLayout = new RelativeLayout(ctx);
 
         strengthIcons = new ArrayList<>();
         strengthIcon = new ImageView(ctx);
@@ -148,13 +143,13 @@ public class PasswordStrengthMeter extends LinearLayout{
 
         cardViewLayout.setPadding(dpAsPixels(5),0,dpAsPixels(5),0);
 
-        strengthIcons.add(R.drawable.nomouthgray);
-        strengthIcons.add(R.drawable.cry);
-        strengthIcons.add(R.drawable.bad);
-        strengthIcons.add(R.drawable.okay);
-        strengthIcons.add(R.drawable.good);
-        strengthIcons.add(R.drawable.awesome);
-        strengthIcons.add(R.drawable.love);
+        strengthIcons.add(ctx.getDrawable(R.drawable.nomouthgray));
+        strengthIcons.add(ctx.getDrawable(R.drawable.cry));
+        strengthIcons.add(ctx.getDrawable(R.drawable.bad));
+        strengthIcons.add(ctx.getDrawable(R.drawable.okay));
+        strengthIcons.add(ctx.getDrawable(R.drawable.good));
+        strengthIcons.add(ctx.getDrawable(R.drawable.awesome));
+        strengthIcons.add(ctx.getDrawable(R.drawable.love));
 
         //containerParams.setMargins(0, dpAsPixels, 0 ,0 );
 
@@ -192,12 +187,12 @@ public class PasswordStrengthMeter extends LinearLayout{
     }
 
     private void setStrengthIcon (int strength) {
-        if (strength > 6 || strength < 0) {
-            throw new IllegalArgumentException("Number out of range! Must be within (0-5)");
+        if (strength > maxStrength || strength < 0) {
+            throw new IllegalArgumentException("Number out of range! Must be within (0-" + maxStrength + ")!");
 
         }
-        int Icon = strengthIcons.get(strength);
-        strengthIcon.setBackgroundResource(Icon);
+        Drawable icon = strengthIcons.get(strength);
+        strengthIcon.setBackground(icon);
 
         final Animation slide_up = AnimationUtils.loadAnimation(ctx, R.anim.scale_up);
         strengthIcon.startAnimation(slide_up);
@@ -209,5 +204,29 @@ public class PasswordStrengthMeter extends LinearLayout{
     private int dpAsPixels (int dp) {
         float scale = getResources().getDisplayMetrics().density;
         return (int) (dp*scale + 0.5f);
+    }
+
+    public void setStrengthChecker(StrengthChecker strengthChecker){
+        this.strengthChecker = strengthChecker;
+    }
+
+    public void setStrengthDrawables(ArrayList<Drawable> strengthIcons){
+        if (strengthIcons.size() == maxStrength + 1) {
+            this.strengthIcons.clear();
+            copy(this.strengthIcons, strengthIcons);
+        } else {
+            throw new IllegalArgumentException("Array length must equal maxStrength + 1");
+        }
+    }
+
+    public void setMaxStrength(int strength) {
+        maxStrength = strength;
+    }
+
+    public void setVisibleDrawable(Drawable drawable) {
+        visibleIcon = drawable;
+    }
+    public void setHiddenDrawable(Drawable drawable) {
+        hiddenIcon = drawable;
     }
 }
