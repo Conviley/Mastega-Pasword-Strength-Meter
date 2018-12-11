@@ -186,7 +186,7 @@ public class PasswordStrengthMeter extends LinearLayout{
 
     private void setStrengthIcon (int strength) {
         if (strength > maxStrength || strength < 0) {
-            throw new IllegalArgumentException("Number out of range! Must be within (0-" + maxStrength + ")!");
+            throw new IllegalArgumentException("Strength out of range! Must be within (0-" + maxStrength + ")! Your strength: " + strength);
 
         }
         Drawable icon = strengthIcons.get(strength);
@@ -211,7 +211,8 @@ public class PasswordStrengthMeter extends LinearLayout{
     public void setStrengthDrawables(ArrayList<Drawable> strengthIcons){
         if (strengthIcons.size() == maxStrength + 1) {
             this.strengthIcons.clear();
-            copy(this.strengthIcons, strengthIcons);
+            //copy(this.strengthIcons, strengthIcons);
+            this.strengthIcons = new ArrayList<>(strengthIcons);
             strengthIcon.setBackground(strengthIcons.get(0));
         } else {
             throw new IllegalArgumentException("Array length must equal maxStrength + 1");
@@ -221,12 +222,9 @@ public class PasswordStrengthMeter extends LinearLayout{
     public void setMaxStrength(int strength) {
         maxStrength = strength;
     }
-    public void setVisibleDrawable(Drawable drawable) {
-        visibleIcon = drawable;
-        toggleVisibility.setBackground(visibleIcon);
-    }
-    public void setHiddenDrawable(Drawable drawable) {
-        hiddenIcon = drawable;
+    public void setToggleVisibilityIcons(Drawable visibleIcon, Drawable hiddenIcon) {
+        this.visibleIcon = visibleIcon;
+        this.hiddenIcon = hiddenIcon;
         toggleVisibility.setBackground(hiddenIcon);
     }
 }
