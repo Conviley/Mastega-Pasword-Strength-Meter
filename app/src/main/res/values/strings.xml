@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Sample</string>
+    <string name="under_eight_test">Must be longer than 8 characters</string>
+    <string name="ideal_password_test">This is longer than 8 characters! Great!</string>
+    <string name="empty">Start writing, please</string>
+
 </resources>
