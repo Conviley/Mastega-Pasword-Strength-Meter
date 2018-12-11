@@ -120,14 +120,12 @@ public class PasswordStrengthMeter extends LinearLayout{
 
 
         RelativeLayout.LayoutParams strengthIconParams = new RelativeLayout.LayoutParams(
-                LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT);
+                dpAsPixels(25), dpAsPixels(25));
 
         strengthIconParams.addRule(RelativeLayout.CENTER_VERTICAL);
 
         RelativeLayout.LayoutParams toggleVisibilityParams = new RelativeLayout.LayoutParams(
-                LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT);
+                dpAsPixels(25), dpAsPixels(25));
 
         toggleVisibilityParams.addRule(RelativeLayout.CENTER_VERTICAL);
         toggleVisibilityParams.addRule(RelativeLayout.ALIGN_PARENT_END);
@@ -214,6 +212,7 @@ public class PasswordStrengthMeter extends LinearLayout{
         if (strengthIcons.size() == maxStrength + 1) {
             this.strengthIcons.clear();
             copy(this.strengthIcons, strengthIcons);
+            strengthIcon.setBackground(strengthIcons.get(0));
         } else {
             throw new IllegalArgumentException("Array length must equal maxStrength + 1");
         }
@@ -222,11 +221,12 @@ public class PasswordStrengthMeter extends LinearLayout{
     public void setMaxStrength(int strength) {
         maxStrength = strength;
     }
-
     public void setVisibleDrawable(Drawable drawable) {
         visibleIcon = drawable;
+        toggleVisibility.setBackground(visibleIcon);
     }
     public void setHiddenDrawable(Drawable drawable) {
         hiddenIcon = drawable;
+        toggleVisibility.setBackground(hiddenIcon);
     }
 }
