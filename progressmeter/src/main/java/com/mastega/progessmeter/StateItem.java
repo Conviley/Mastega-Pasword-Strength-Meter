@@ -57,7 +57,7 @@ class StateItem {
         return reached;
     }
 
-    public void setReached(boolean reached) {
+    public void setCompleted(boolean reached) {
         this.reached = reached;
         if (reached) {
             setSaturation(1);

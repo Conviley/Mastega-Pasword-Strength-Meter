@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -107,17 +106,45 @@ public class ProgressMeter extends CardView {
 
         for (StateItem stateItem : stateItems) {
             if (stateItem.getStep() == state - 1) {
-                stateItem.setReached(true);
+                stateItem.setCompleted(true);
                 stateItem.getCircleIndicator().stop();
-            }
-
-            if (stateItem.getStep() == state){
+            } else if (stateItem.getStep() == state){
                 stateItem.getCircleIndicator().indicate();
             }
-
         }
-
         currentState++;
+        invalidate();
+    }
+
+    public void nextState() {
+        if(currentState >= stateItems.size()) {
+            return;
+        }
+        currentState++;
+        for (StateItem stateItem : stateItems) {
+            if (stateItem.getStep() == currentState - 1) {
+                stateItem.setCompleted(true);
+                stateItem.getCircleIndicator().stop();
+            } else if (stateItem.getStep() == currentState) {
+                stateItem.getCircleIndicator().indicate();
+            }
+        }
+        invalidate();
+    }
+
+    public void prevState() {
+        if(currentState <= 0) {
+            return;
+        }
+        for (StateItem stateItem : stateItems) {
+            if (stateItem.getStep() == currentState) {
+                stateItem.getCircleIndicator().stop();
+            } else if (stateItem.getStep() == currentState - 1) {
+                stateItem.setCompleted(false);
+                stateItem.getCircleIndicator().indicate();
+            }
+        }
+        currentState--;
         invalidate();
     }
 

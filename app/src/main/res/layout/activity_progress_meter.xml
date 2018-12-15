@@ -19,6 +19,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="GO TO NEXT STATE"
-        android:id="@+id/button"/>
+        android:id="@+id/next_state"/>
+
+    <Button
+        android:id="@+id/prev_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="GO TO PREVIOUS STATE" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="This is just some text. You are now at the first step."
+        android:id="@+id/text_stuff"/>
 
 </LinearLayout>
