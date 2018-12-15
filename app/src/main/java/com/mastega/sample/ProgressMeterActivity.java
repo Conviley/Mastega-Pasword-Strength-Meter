@@ -22,7 +22,7 @@ public class ProgressMeterActivity extends AppCompatActivity {
 
         progressMeter.setStates(
                 new String[] {"Details", "Status", "Photo", "Confirm", "Nogg"},
-                getDrawable(R.drawable.bad));
+                getDrawable(R.drawable.circle_good));
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

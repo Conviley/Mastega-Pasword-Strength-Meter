@@ -103,7 +103,6 @@ public class ProgressMeter extends CardView {
         }
 
         for (StateItem stateItem : stateItems) {
-            Log.d("dee", "goToState: ");
             if (stateItem.getStep() == state - 1) {
                 stateItem.setReached(true);
                 break;
