@@ -1,6 +1,11 @@
 package com.mastega.progessmeter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
@@ -22,6 +27,15 @@ public class ProgressMeter extends CardView {
     private Context ctx;
     private ArrayList<ImageView> stateIVs = new ArrayList<>();
     private ArrayList<TextView> stateTVs = new ArrayList<>();
+    private ArrayList<StateItem> stateItems = new ArrayList<>();
+
+    private LinearLayout container;
+    private LinearLayout statesLayout;
+    private LinearLayout stateDescsLayout;
+    private LinearLayout.LayoutParams stateIVParams;
+    private LinearLayout.LayoutParams stateTVParams;
+
+    private int currentState = 0;
 
     public ProgressMeter(Context context) {
         super(context);
@@ -41,52 +55,78 @@ public class ProgressMeter extends CardView {
     private void init(Context context) {
         this.ctx = context;
 
-        for (int i = 0; i < 3; i++) {
-            ImageView imageView = new ImageView(ctx);
-            imageView.setImageDrawable(ctx.getDrawable(R.drawable.awesome));
-            stateIVs.add(imageView);
-
-            TextView textView = new TextView(ctx);
-            String stateText = "State " + i;
-            textView.setText(stateText);
-            textView.setTextAlignment(TEXT_ALIGNMENT_CENTER);
-            stateTVs.add(textView);
-        }
-
-        LinearLayout.LayoutParams stateIVParams = new LinearLayout.LayoutParams(
-                dpAsPixels(25), dpAsPixels(25));
-        stateIVParams.weight = 1;
-
-        LinearLayout.LayoutParams stateTVParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        stateTVParams.weight = 1;
+        initLayouts();
+        setStates(new String[] {"State 1", "State 2", "State 3"} , ctx.getDrawable(R.drawable.awesome));
 
         LinearLayout.LayoutParams verticalCenterParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         verticalCenterParams.gravity = Gravity.CENTER_VERTICAL;
-        
-        LinearLayout container = new LinearLayout(ctx);
+
+        container.addView(statesLayout);
+        container.addView(stateDescsLayout);
+        this.addView(container, verticalCenterParams);
+    }
+
+    private void initLayouts(){
+        container = new LinearLayout(ctx);
         container.setOrientation(LinearLayout.VERTICAL);
 
-        LinearLayout statesLayout = new LinearLayout(ctx);
+        statesLayout = new LinearLayout(ctx);
         statesLayout.setOrientation(LinearLayout.HORIZONTAL);
-        for (ImageView imageView : stateIVs) {
-            statesLayout.addView(imageView, stateIVParams);
-        }
-        container.addView(statesLayout);
 
-        LinearLayout statesTextLayout = new LinearLayout(ctx);
-        statesTextLayout.setOrientation(LinearLayout.HORIZONTAL);
-        for (TextView stateText : stateTVs) {
-            statesTextLayout.addView(stateText, stateTVParams);
-        }
-        container.addView(statesTextLayout);
-        this.addView(container, verticalCenterParams);
+        stateDescsLayout = new LinearLayout(ctx);
+        stateDescsLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+        stateIVParams = new LinearLayout.LayoutParams(
+                0, dpAsPixels(25));
+        stateIVParams.weight = 1;
+
+        stateTVParams = new LinearLayout.LayoutParams(
+                0, ViewGroup.LayoutParams.WRAP_CONTENT);
+        stateTVParams.weight = 1;
     }
 
     private int dpAsPixels (int dp) {
         float scale = getResources().getDisplayMetrics().density;
         return (int) (dp*scale + 0.5f);
+    }
+
+    private void draw(){
+        statesLayout.removeAllViews();
+        stateDescsLayout.removeAllViews();
+
+        for (StateItem stateItem : stateItems) {
+            statesLayout.addView(stateItem.getImageView(), stateIVParams);
+            stateDescsLayout.addView(stateItem.getTextView(), stateTVParams);
+        }
+
+        invalidate();
+        requestLayout();
+    }
+
+    public void goToState(int state) {
+        if (currentState != state - 1) {
+            throw new IllegalArgumentException("State: " + (state - 1) + "is not reached yet!");
+        }
+
+        for (StateItem stateItem : stateItems) {
+            if (stateItem.getStep() == state) {
+                stateItem.setReached(true);
+                break;
+            }
+        }
+
+        currentState++;
+        invalidate();
+        requestLayout();
+    }
+
+    public void setStates(String[] stateDescs, Drawable stateDrawable){
+        stateItems.clear();
+        for(int i = 0; i < stateDescs.length; i++) {
+            stateItems.add(new StateItem(i, stateDescs[i], stateDrawable, ctx));
+        }
+        draw();
     }
 
 }

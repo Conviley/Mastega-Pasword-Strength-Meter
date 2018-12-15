@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mastega.sample.ProgressMeterActivity"
+    android:orientation="vertical">
+
+    <com.mastega.progessmeter.ProgressMeter
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress_meter"
+        android:layout_margin="5dp">
+
+    </com.mastega.progessmeter.ProgressMeter>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="GO TO NEXT STATE"
+        android:id="@+id/button"/>
+
+</LinearLayout>
