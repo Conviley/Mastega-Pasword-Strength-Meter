@@ -11,7 +11,7 @@
         android:toXScale="1.2"
         android:toYScale="1.2"
 
-        android:duration="1000"
+        android:duration="500"
         android:repeatCount="-1"
         android:repeatMode="reverse"
 

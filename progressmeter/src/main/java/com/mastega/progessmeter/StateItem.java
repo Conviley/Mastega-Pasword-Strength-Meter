@@ -38,7 +38,6 @@ class StateItem {
         // change saturation to "1" for full color.
         matrix.setSaturation(value);
         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-        circleIndicator.getBack().setColorFilter(filter);
         circleIndicator.getFront().setColorFilter(filter);
     }
 

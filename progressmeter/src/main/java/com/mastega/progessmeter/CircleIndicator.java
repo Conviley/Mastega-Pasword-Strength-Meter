@@ -52,7 +52,7 @@ public class CircleIndicator extends RelativeLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         centerParam.addRule(RelativeLayout.CENTER_HORIZONTAL);
-
+        centerParam.setMargins(0,10,0,10);
         this.addView(back,centerParam);
         this.addView(front, centerParam);
     }

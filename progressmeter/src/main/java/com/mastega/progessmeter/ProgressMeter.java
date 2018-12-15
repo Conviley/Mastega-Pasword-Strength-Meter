@@ -58,7 +58,10 @@ public class ProgressMeter extends CardView {
 
         container.addView(statesLayout);
         container.addView(stateDescsLayout);
+        container.setPadding(0,10,0,0);
         this.addView(container, verticalCenterParams);
+
+
     }
 
     private void initLayouts(){
@@ -124,6 +127,7 @@ public class ProgressMeter extends CardView {
             if (i == 0) {
                StateItem stateItem = new StateItem(i, stateDescs[i], stateDrawable.getConstantState().newDrawable().mutate(), ctx);
                stateItem.getCircleIndicator().indicate();
+               stateItems.add(stateItem);
             } else {
                 stateItems.add(new StateItem(i, stateDescs[i], stateDrawable.getConstantState().newDrawable().mutate(), ctx));
             }
