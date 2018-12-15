@@ -90,7 +90,7 @@ public class ProgressMeter extends CardView {
         stateDescsLayout.removeAllViews();
 
         for (StateItem stateItem : stateItems) {
-            statesLayout.addView(stateItem.getImageView(), stateIVParams);
+            statesLayout.addView(stateItem.getCircleIndicator(), stateIVParams);
             stateDescsLayout.addView(stateItem.getTextView(), stateTVParams);
         }
 
@@ -105,8 +105,13 @@ public class ProgressMeter extends CardView {
         for (StateItem stateItem : stateItems) {
             if (stateItem.getStep() == state - 1) {
                 stateItem.setReached(true);
-                break;
+                stateItem.getCircleIndicator().stop();
             }
+
+            if (stateItem.getStep() == state){
+                stateItem.getCircleIndicator().indicate();
+            }
+
         }
 
         currentState++;
@@ -116,7 +121,13 @@ public class ProgressMeter extends CardView {
     public void setStates(String[] stateDescs, Drawable stateDrawable){
         stateItems.clear();
         for(int i = 0; i < stateDescs.length; i++) {
-            stateItems.add(new StateItem(i, stateDescs[i], stateDrawable.getConstantState().newDrawable().mutate(), ctx));
+            if (i == 0) {
+               StateItem stateItem = new StateItem(i, stateDescs[i], stateDrawable.getConstantState().newDrawable().mutate(), ctx);
+               stateItem.getCircleIndicator().indicate();
+            } else {
+                stateItems.add(new StateItem(i, stateDescs[i], stateDrawable.getConstantState().newDrawable().mutate(), ctx));
+            }
+
         }
 
         draw();

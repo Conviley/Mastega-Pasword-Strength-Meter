@@ -17,14 +17,13 @@ class StateItem {
     private int step;
     private boolean reached;
 
-    private ImageView imageView;
+    private CircleIndicator circleIndicator;
     private TextView textView;
 
     public StateItem(int step, String text, Drawable drawable, Context ctx) {
         this.step = step;
-
-        imageView = new ImageView(ctx);
-        imageView.setImageDrawable(drawable);
+        circleIndicator = new CircleIndicator(ctx);
+        circleIndicator.setFrontDrawable(drawable);
         setSaturation(0);
 
         textView = new TextView(ctx);
@@ -39,15 +38,16 @@ class StateItem {
         // change saturation to "1" for full color.
         matrix.setSaturation(value);
         ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-        imageView.setColorFilter(filter);
+        circleIndicator.getBack().setColorFilter(filter);
+        circleIndicator.getFront().setColorFilter(filter);
     }
 
     public int getStep() {
         return step;
     }
 
-    public ImageView getImageView() {
-        return imageView;
+    public CircleIndicator getCircleIndicator() {
+        return circleIndicator;
     }
 
     public TextView getTextView() {
