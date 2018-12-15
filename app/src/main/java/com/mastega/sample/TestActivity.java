@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.mastega.passwordstrengthmeter.PasswordStrengthMeter;
 import com.mastega.passwordstrengthmeter.StrengthChecker;
+import com.mastega.progessmeter.ProgressMeter;
 
 import java.util.ArrayList;
 
@@ -62,5 +63,4 @@ public class TestActivity extends AppCompatActivity {
         };
         return strengthChecker;
     }
-
 }

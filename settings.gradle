@@ -1,1 +1,1 @@
-include ':app', ':passwordstrengthmeter'
+include ':app', ':passwordstrengthmeter', ':progressmeter'
