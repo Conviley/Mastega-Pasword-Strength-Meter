@@ -1,22 +1,18 @@
 package com.mastega.progessmeter;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextSwitcher;
-import android.widget.TextView;
+
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Tjelvar Guo on 2018-12-15.
@@ -25,9 +21,7 @@ import java.util.ArrayList;
 public class ProgressMeter extends CardView {
 
     private Context ctx;
-    private ArrayList<ImageView> stateIVs = new ArrayList<>();
-    private ArrayList<TextView> stateTVs = new ArrayList<>();
-    private ArrayList<StateItem> stateItems = new ArrayList<>();
+    private List<StateItem> stateItems = new ArrayList<>();
 
     private LinearLayout container;
     private LinearLayout statesLayout;
@@ -101,7 +95,6 @@ public class ProgressMeter extends CardView {
         }
 
         invalidate();
-        requestLayout();
     }
 
     public void goToState(int state) {
@@ -110,7 +103,8 @@ public class ProgressMeter extends CardView {
         }
 
         for (StateItem stateItem : stateItems) {
-            if (stateItem.getStep() == state) {
+            Log.d("dee", "goToState: ");
+            if (stateItem.getStep() == state - 1) {
                 stateItem.setReached(true);
                 break;
             }
@@ -118,14 +112,14 @@ public class ProgressMeter extends CardView {
 
         currentState++;
         invalidate();
-        requestLayout();
     }
 
     public void setStates(String[] stateDescs, Drawable stateDrawable){
         stateItems.clear();
         for(int i = 0; i < stateDescs.length; i++) {
-            stateItems.add(new StateItem(i, stateDescs[i], stateDrawable, ctx));
+            stateItems.add(new StateItem(i, stateDescs[i], stateDrawable.getConstantState().newDrawable().mutate(), ctx));
         }
+
         draw();
     }
 
