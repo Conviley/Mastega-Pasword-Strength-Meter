@@ -99,6 +99,10 @@ public class ProgressMeter extends CardView {
         invalidate();
     }
 
+    public int getCurrentState() {
+        return currentState;
+    }
+
     public void goToState(int state) {
         if (currentState != state - 1) {
             throw new IllegalArgumentException("State: " + (state - 1) + "is not reached yet!");

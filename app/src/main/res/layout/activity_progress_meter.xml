@@ -12,20 +12,25 @@
         android:layout_height="wrap_content"
         android:id="@+id/progress_meter"
         android:layout_margin="5dp">
-
     </com.mastega.progessmeter.ProgressMeter>
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="GO TO NEXT STATE"
-        android:id="@+id/next_state"/>
-
-    <Button
-        android:id="@+id/prev_state"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="GO TO PREVIOUS STATE" />
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/prev_state"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="PREVIOUS STATE"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="NEXT STATE"
+            android:id="@+id/next_state"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"

@@ -12,13 +12,15 @@ public class ProgressMeterActivity extends AppCompatActivity {
 
     private int currentState = 0;
 
+    private ProgressMeter progressMeter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress_meter);
 
 
-        final ProgressMeter progressMeter = findViewById(R.id.progress_meter);
+        progressMeter = findViewById(R.id.progress_meter);
         Button buttonNextState = findViewById(R.id.next_state);
         Button buttonPrevState = findViewById(R.id.prev_state);
 
@@ -29,25 +31,35 @@ public class ProgressMeterActivity extends AppCompatActivity {
         buttonNextState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //progressMeter.goToState(currentState + 1);
-                progressMeter.nextState();
-                //currentState++;
-                updateStateInfo(currentState);
+                goToNextState();
             }
         });
         buttonPrevState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressMeter.prevState();
+                goToPrevState();
             }
         });
     }
 
-    private void updateStateInfo(int currentState) {
+    private void goToNextState() {
+        progressMeter.nextState();
+        updateStateInfo();
+    }
+
+    private void goToPrevState() {
+        progressMeter.prevState();
+        updateStateInfo();
+    }
+
+    private void updateStateInfo() {
+        currentState = progressMeter.getCurrentState();
         TextView textView = findViewById(R.id.text_stuff);
         switch (currentState) {
+            case 0:
+                textView.setText("This is just some text. You are now at the first step.");
             case 1:
-                textView.setText("Now we're at text 1");
+                textView.setText("Now we're at text 2");
                 break;
             case 2:
                 textView.setText("Now You're supposed to do this");
