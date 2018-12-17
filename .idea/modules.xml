@@ -3,8 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Mastega-Pasword-Strength-Meter.iml" filepath="$PROJECT_DIR$/Mastega-Pasword-Strength-Meter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Mastega-Pasword-Strength-Meter.iml" filepath="$PROJECT_DIR$/Mastega-Pasword-Strength-Meter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/passwordstrengthmeter/passwordstrengthmeter.iml" filepath="$PROJECT_DIR$/passwordstrengthmeter/passwordstrengthmeter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/passwordstrengthmeter/passwordstrengthmeter.iml" filepath="$PROJECT_DIR$/passwordstrengthmeter/passwordstrengthmeter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/progressmeter/progressmeter.iml" filepath="$PROJECT_DIR$/progressmeter/progressmeter.iml" />
       <module fileurl="file://$PROJECT_DIR$/progressmeter/progressmeter.iml" filepath="$PROJECT_DIR$/progressmeter/progressmeter.iml" />
     </modules>
   </component>

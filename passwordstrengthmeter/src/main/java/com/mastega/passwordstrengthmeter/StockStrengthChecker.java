@@ -1,5 +1,7 @@
 package com.mastega.passwordstrengthmeter;
 
+import android.content.Context;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -7,7 +9,7 @@ import java.util.regex.Pattern;
  * Created by Tjelvar Guo on 2018-11-24.
  */
 
-public class StockStrengthChecker implements StrengthChecker{
+public class StockStrengthChecker extends StrengthChecker{
 
     private boolean foundUpperCase = false;
     private boolean foundLowerCase = false;
@@ -15,6 +17,11 @@ public class StockStrengthChecker implements StrengthChecker{
     private boolean foundDigit = false;
     private boolean adequateLength = false;
     private boolean idealLength = false;
+
+    StockStrengthChecker(Context context) {
+        super(context);
+    }
+
 
     @Override
     public int CalculateStrength(String password) {
@@ -75,22 +82,22 @@ public class StockStrengthChecker implements StrengthChecker{
     }
 
     @Override
-    public int setHelperText() {
+    public String getHelperText() {
         if (!adequateLength) {
-            return R.string.under_eight;
+            return ctx.getString(R.string.under_eight);
         }
         else if (!foundLowerCase || !foundUpperCase) {
-            return R.string.no_mixed_case;
+            return ctx.getString(R.string.no_mixed_case);
         }
         else if (!foundDigit) {
-            return R.string.no_numerical_char;
+            return ctx.getString(R.string.no_numerical_char);
         }
         else if (!foundSpecialChar) {
-            return R.string.no_special_char;
+            return ctx.getString(R.string.no_special_char);
         }
         else if (!idealLength) {
-            return R.string.under_twelve;
+            return ctx.getString(R.string.under_twelve);
         }
-        return R.string.ideal_password;
+        return ctx.getString(R.string.ideal_password);
     }
 }
