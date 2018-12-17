@@ -2,6 +2,7 @@ package com.mastega.sample;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -58,6 +59,7 @@ public class ProgressMeterActivity extends AppCompatActivity {
         switch (currentState) {
             case 0:
                 textView.setText("This is just some text. You are now at the first step.");
+                break;
             case 1:
                 textView.setText("Now we're at text 2");
                 break;
