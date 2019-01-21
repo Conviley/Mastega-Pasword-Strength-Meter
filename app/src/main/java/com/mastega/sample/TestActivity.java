@@ -35,7 +35,7 @@ public class TestActivity extends AppCompatActivity {
     }
 
     private StrengthChecker createStrengthChecker() {
-        StrengthChecker strengthChecker = new StrengthChecker() {
+        StrengthChecker strengthChecker = new StrengthChecker(getApplicationContext()) {
             private int strength = 0;
             @Override
             public int CalculateStrength(String password) {
@@ -50,14 +50,14 @@ public class TestActivity extends AppCompatActivity {
             }
 
             @Override
-            public int setHelperText() {
+            public String getHelperText() {
                 switch(strength) {
                     case 1:
-                        return R.string.under_eight_test;
+                        return getString(R.string.under_eight_test);
                     case 2:
-                        return R.string.ideal_password_test;
+                        return getString(R.string.ideal_password_test);
                     default:
-                        return R.string.empty;
+                        return getString(R.string.empty);
                 }
             }
         };

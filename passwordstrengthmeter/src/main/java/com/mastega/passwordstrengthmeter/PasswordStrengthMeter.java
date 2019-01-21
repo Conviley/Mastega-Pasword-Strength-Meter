@@ -21,8 +21,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import static java.util.Collections.copy;
-
 
 /**
  * Created by Tjelvar Guo on 2018-11-24.
@@ -110,7 +108,7 @@ public class PasswordStrengthMeter extends LinearLayout{
         strengthIcon.setId(View.generateViewId());
         strengthIcon.setBackgroundResource(R.drawable.nomouthgray);
 
-        strengthChecker = new StockStrengthChecker();
+        strengthChecker = new StockStrengthChecker(ctx);
 
 
         RelativeLayout.LayoutParams inputFieldParams = new RelativeLayout.LayoutParams(
@@ -164,7 +162,7 @@ public class PasswordStrengthMeter extends LinearLayout{
                 if (currentStrength != strength) {
                     setStrengthIcon(strength);
                     currentStrength = strength;
-                    errorTextView.setText(strengthChecker.setHelperText());
+                    errorTextView.setText(strengthChecker.getHelperText());
                 }
             }
 
