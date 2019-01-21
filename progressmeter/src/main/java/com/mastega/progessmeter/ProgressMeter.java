@@ -62,7 +62,6 @@ public class ProgressMeter extends CardView {
         container.setPadding(0,10,0,0);
         this.addView(container, verticalCenterParams);
 
-
     }
 
     private void initLayouts(){
@@ -98,27 +97,6 @@ public class ProgressMeter extends CardView {
             stateDescsLayout.addView(stateItem.getTextView(), stateTVParams);
         }
 
-        invalidate();
-    }
-
-    public int getCurrentState() {
-        return currentState;
-    }
-
-    public void goToState(int state) {
-        if (currentState != state - 1) {
-            throw new IllegalArgumentException("State: " + (state - 1) + "is not reached yet!");
-        }
-
-        for (StateItem stateItem : stateItems) {
-            if (stateItem.getStep() == state - 1) {
-                stateItem.setCompleted(true);
-                stateItem.getCircleIndicator().stop();
-            } else if (stateItem.getStep() == state){
-                stateItem.getCircleIndicator().indicate();
-            }
-        }
-        currentState++;
         invalidate();
     }
 
@@ -168,7 +146,6 @@ public class ProgressMeter extends CardView {
             }
 
         }
-
         draw();
     }
 

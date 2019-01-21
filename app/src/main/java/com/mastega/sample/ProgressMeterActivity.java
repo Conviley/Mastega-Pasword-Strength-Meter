@@ -11,8 +11,6 @@ import com.mastega.progessmeter.ProgressMeter;
 
 public class ProgressMeterActivity extends AppCompatActivity {
 
-    private int currentState = 0;
-
     private ProgressMeter progressMeter;
 
     @Override
@@ -54,6 +52,7 @@ public class ProgressMeterActivity extends AppCompatActivity {
         switch (currentState) {
             case 0:
                 textView.setText("This is just some text. You are now at the first step.");
+                break;
             case 1:
                 textView.setText("Now we're at text 2");
                 break;
