@@ -28,6 +28,8 @@ public class ProgressMeter extends CardView {
     private LinearLayout.LayoutParams stateIVParams;
     private LinearLayout.LayoutParams stateTVParams;
 
+    private OnStateChangeListener stateChangeListener;
+
     private int currentState = 0;
 
     public ProgressMeter(Context context) {
@@ -59,7 +61,6 @@ public class ProgressMeter extends CardView {
         container.addView(stateDescsLayout);
         container.setPadding(0,10,0,0);
         this.addView(container, verticalCenterParams);
-
 
     }
 
@@ -99,27 +100,6 @@ public class ProgressMeter extends CardView {
         invalidate();
     }
 
-    public int getCurrentState() {
-        return currentState;
-    }
-
-    public void goToState(int state) {
-        if (currentState != state - 1) {
-            throw new IllegalArgumentException("State: " + (state - 1) + "is not reached yet!");
-        }
-
-        for (StateItem stateItem : stateItems) {
-            if (stateItem.getStep() == state - 1) {
-                stateItem.setCompleted(true);
-                stateItem.getCircleIndicator().stop();
-            } else if (stateItem.getStep() == state){
-                stateItem.getCircleIndicator().indicate();
-            }
-        }
-        currentState++;
-        invalidate();
-    }
-
     public void nextState() {
         if(currentState >= stateItems.size()) {
             return;
@@ -133,6 +113,7 @@ public class ProgressMeter extends CardView {
                 stateItem.getCircleIndicator().indicate();
             }
         }
+        stateChangeListener.onStateChange(currentState);
         invalidate();
     }
 
@@ -149,6 +130,7 @@ public class ProgressMeter extends CardView {
             }
         }
         currentState--;
+        stateChangeListener.onStateChange(currentState);
         invalidate();
     }
 
@@ -164,8 +146,10 @@ public class ProgressMeter extends CardView {
             }
 
         }
-
         draw();
     }
 
+    public void setOnStateChangeListener(OnStateChangeListener listener){
+        stateChangeListener = listener;
+    }
 }
