@@ -28,6 +28,8 @@ public class ProgressMeter extends CardView {
     private LinearLayout.LayoutParams stateIVParams;
     private LinearLayout.LayoutParams stateTVParams;
 
+    private OnStateChangeListener stateChangeListener;
+
     private int currentState = 0;
 
     public ProgressMeter(Context context) {
@@ -133,6 +135,7 @@ public class ProgressMeter extends CardView {
                 stateItem.getCircleIndicator().indicate();
             }
         }
+        stateChangeListener.onStateChange(currentState);
         invalidate();
     }
 
@@ -149,6 +152,7 @@ public class ProgressMeter extends CardView {
             }
         }
         currentState--;
+        stateChangeListener.onStateChange(currentState);
         invalidate();
     }
 
@@ -168,4 +172,7 @@ public class ProgressMeter extends CardView {
         draw();
     }
 
+    public void setOnStateChangeListener(OnStateChangeListener listener){
+        stateChangeListener = listener;
+    }
 }

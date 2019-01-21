@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.mastega.progessmeter.OnStateChangeListener;
 import com.mastega.progessmeter.ProgressMeter;
 
 public class ProgressMeterActivity extends AppCompatActivity {
@@ -28,32 +29,27 @@ public class ProgressMeterActivity extends AppCompatActivity {
                 new String[] {"Details", "Status", "Photo", "Confirm", "Shipping"},
                 getDrawable(R.drawable.circle_good));
 
+        progressMeter.setOnStateChangeListener(new OnStateChangeListener() {
+            @Override
+            public void onStateChange(int state) {
+                updateStateInfo(state);
+            }
+        });
         buttonNextState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToNextState();
+                progressMeter.nextState();
             }
         });
         buttonPrevState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToPrevState();
+                progressMeter.prevState();
             }
         });
     }
 
-    private void goToNextState() {
-        progressMeter.nextState();
-        updateStateInfo();
-    }
-
-    private void goToPrevState() {
-        progressMeter.prevState();
-        updateStateInfo();
-    }
-
-    private void updateStateInfo() {
-        currentState = progressMeter.getCurrentState();
+    private void updateStateInfo(int currentState) {
         TextView textView = findViewById(R.id.text_stuff);
         switch (currentState) {
             case 0:
@@ -71,8 +67,5 @@ public class ProgressMeterActivity extends AppCompatActivity {
                 textView.setText("Now this is the final step");
                 break;
         }
-
     }
-
-
 }
